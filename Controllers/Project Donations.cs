@@ -100,6 +100,36 @@ namespace Project_Donations.Controllers
             return Ok(user);
         }
 
+        [HttpPatch("ChangeRoleByAdmin")]
+
+        public ActionResult<bool> changeRoleByAdmin(int PersonID, string Role)
+        {
+            bool isChanged = clsBuisnessLayer.changeRoleByAdmin(PersonID, Role);
+            if (isChanged)
+            {
+                return Ok("تم تغيير دور المستخدم بنجاح");
+            }
+            else
+            {
+                return NotFound("من المتوقع ان هناك خطا ما اثناء تغيير دور المستخدم ");
+            }
+        }
+
+        [HttpGet("GetAllPersons")]
+        public ActionResult<List<clsModels.GetAllPersons>> GetAllPersons()
+        {
+            var persons = clsBuisnessLayer.GetAllPersons();
+            if (persons == null || persons.Count == 0)
+            {
+                return NotFound("لا يوجد مستخدمين حاليا");
+            }
+            else
+            {
+                return Ok(persons);
+            }
+        }
+
+
         [Authorize(Roles = "Admin")]
         [HttpPost("AddSection")]
         public ActionResult<bool> AddSections([FromForm] clsModels.AddSections addSections, IFormFile image)

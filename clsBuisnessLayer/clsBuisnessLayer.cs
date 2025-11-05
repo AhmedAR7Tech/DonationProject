@@ -45,6 +45,31 @@ namespace ClsBuisnessLayer
             }
         }
 
+        static public bool changeRoleByAdmin(int PersonID , string Role)
+        {
+            if(clsDataAccess.ChangeRoolByAdmin(PersonID , Role))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        static public List<clsModels.GetAllPersons> GetAllPersons()
+        {
+            List<clsModels.GetAllPersons> persons = clsDataAccess.GetAllPersons();
+            if (persons != null && persons.Count > 0)
+            {
+                return persons;
+            }
+            else
+            {
+                return new List<clsModels.GetAllPersons>();
+            }
+        }   
+
         static public bool AddSections(clsModels.AddSections addSections , string ImageUrl)
         {
             bool isAdded = clsDataAccess.AddSections(addSections , ImageUrl);

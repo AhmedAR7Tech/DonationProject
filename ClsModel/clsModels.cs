@@ -29,6 +29,16 @@ namespace ClsModel
             public string OTP { get; set;} 
         }
 
+        public class GetAllPersons
+        {
+            public int PersonID { get; set; }
+            public string Name { get; set; }
+            public string E_Mail { get; set; }
+            public string PhoneNumber { get; set; }
+            public string Role { get; set;}
+            public int IsVerified { get; set;}
+        }
+
         public class AddSections
         {
             public string Name { get; set; }

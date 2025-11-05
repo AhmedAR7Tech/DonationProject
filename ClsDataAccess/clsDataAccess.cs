@@ -184,6 +184,77 @@ namespace ClsDataAccess
             return user;
         }
 
+        static public List<clsModels.GetAllPersons> GetAllPersons()
+        {
+            SqlConnection Connection = new SqlConnection(ConnectionString);
+
+            List<clsModels.GetAllPersons> personlist = new List<GetAllPersons>();
+            clsModels.GetAllPersons person = null;
+
+            string Query = @"select PersonID , Name , E_Mail , PhoneNumber , Role , IsVerified from Person;";
+
+            SqlCommand Command = new SqlCommand(Query, Connection);
+            try
+            {
+                Connection.Open();
+                SqlDataReader reader = Command.ExecuteReader();
+                while(reader.Read())
+                {
+                    person = new clsModels.GetAllPersons();
+                    {
+                        person.PersonID = Convert.ToInt32(reader["PersonID"]);
+                        person.Name = reader["Name"].ToString();
+                        person.E_Mail = reader["E_Mail"].ToString();
+                        person.PhoneNumber = reader["PhoneNumber"].ToString();
+                        person.Role = reader["Role"].ToString();
+                        person.IsVerified = Convert.ToInt32(reader["IsVerified"]);
+                    }
+                    personlist.Add(person);
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error is : " + ex.Message);
+            }
+            finally
+            {
+                Connection.Close();
+            }
+            return personlist;
+        }
+
+        static public bool ChangeRoolByAdmin(int PersonID , string Role)
+        {
+            SqlConnection Connection = new SqlConnection(ConnectionString);
+
+            bool IsChanged = false;
+
+            string Query = @"Update Person Set Role = @Role Where PersonID = @PersonID";
+
+            SqlCommand Command = new SqlCommand(Query, Connection);
+            Command.Parameters.AddWithValue("@PersonID", PersonID);
+            Command.Parameters.AddWithValue("@Role", Role);
+            try
+            {
+                Connection.Open();
+                int rowsAffected = Command.ExecuteNonQuery();
+                if (rowsAffected > 0)
+                {
+                    IsChanged = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error is : " + ex.Message);
+            }
+            finally
+            {
+                Connection.Close();
+            }
+            return IsChanged;
+        }
+
         static public bool AddSections(clsModels.AddSections addSections , string ImageUrl)
         {
             SqlConnection Connection = new SqlConnection(ConnectionString);
